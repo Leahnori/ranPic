@@ -76,13 +76,6 @@ window.twttr=(function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],t=window.
 </script>
 </div>
 
-<!--zoom*prop= width/height - 8*8 pixel-->
-<!--zoom*16= width/height - 16*16 pixel-->
-
-<!--button id="create">Create file</button> 
-<a download="info.txt" id="downloadlink" style="display: none">Download</a>
-</a-->
-
 <script type="text/javascript">
 
 var zoom=32;
@@ -98,21 +91,18 @@ function setPixel(imageData, x, y, r, g, b, a) {
 rand();
 function rand() {
 
-//random background
 document.body.style.background='#'+Math.floor(Math.random()*16777215).toString(16);
 
 element = document.getElementById("canvas");
 c = element.getContext("2d");
 
-// read the width and height of the canvas
 width = element.width;
 height = element.height;
 
-// create a new pixel array
 imageData = c.createImageData(width, height);
 var m=0;
 var bigIndex=[];
-// draw random dots
+
 for(var x=0;x<width;x=x+zoom) {
 	var smIndex=[];
 	for(var y=0;y<height;y=y+zoom) {
@@ -129,7 +119,6 @@ for(var x=0;x<width;x=x+zoom) {
 			b = 255;
 			dot=0;
 		}
-		//document.write(dot);
 		smIndex[smIndex.length]=dot;
 		for( var a=0;a<zoom;a++) {
 			for(var e=0;e<zoom;e++ ) {
@@ -138,12 +127,9 @@ for(var x=0;x<width;x=x+zoom) {
 		}
 		
 	}
-	//document.write(smIndex);
-	//document.writeln();
 	bigIndex[bigIndex.length]=smIndex;
 }
 
-//document.writeln(bigIndex);
 for(var q=0;q<prop;q++) {
 	for(var r=0;r<prop;r++) {
 		document.getElementById('ind').innerHTML += bigIndex[q][r]+' ';
@@ -153,40 +139,10 @@ for(var q=0;q<prop;q++) {
 }
 
 document.title+=" Random images";
-//document.write(m); //number of black pieces
 
-
-// copy the image data back onto the canvas
-c.putImageData(imageData, 0, 0); // at coords 0,0
+c.putImageData(imageData, 0, 0); 
 
 }
-/*
-(function () {
-var textFile = null,
-  makeTextFile = function (text) {
-    var data = new Blob([text], {type: 'text/plain'});
-
-    // If we are replacing a previously generated file we need to
-    // manually revoke the object URL to avoid memory leaks.
-    if (textFile !== null) {
-      window.URL.revokeObjectURL(textFile);
-    }
-
-    textFile = window.URL.createObjectURL(data);
-
-    return textFile;
-  };
-
-
-  var create = document.getElementById('create'),
-    textbox = document.getElementById('textbox');
-
-  create.addEventListener('click', function () {
-    var link = document.getElementById('downloadlink');
-    link.href = makeTextFile(bigIndex);
-    link.style.display = 'block';
-  }, false);
-})();*/
 </script>
 
 
