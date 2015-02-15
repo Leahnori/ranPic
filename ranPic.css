@@ -1,7 +1,7 @@
 body {
 	font-family: "Courier New";
 }
-p {
+#p {
 	font-size:300%;
 	padding:10px;
 	font-weight:bold;
@@ -110,4 +110,8 @@ a{
 }
 label {
 	margin-left:10px;
+}
+td {
+    valign: middle;
+    text-align: center;
 }

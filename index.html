@@ -4,7 +4,7 @@
     </head>
     <body>
         <div id="wrapper" >
-            <p>ranPic</p>
+            <p id="p">ranPic</p>
         </div>
         <div id="menu">
             <span><input id="b" type="button" value="stats" onClick="change('fig');"></span>
@@ -15,8 +15,8 @@
 
         <div id="rand" >
             <canvas id="canvas" width="256" height="256" onClick="mi();">random Canvas</canvas> <!--location.reload()-->
-            <br>
-            <a href="#" id="downloadra" download="ranPic.png">download</a>
+            <!--br>
+            <a href="#" id="downloadra" download="ranPic.png">download</a-->
         </div>
 
         <!--div id="ind" ></div--> <!--containing 1s and 0s-->
@@ -31,8 +31,8 @@
 
         <div id="vica">
             <canvas id="vican" width="256" height="256" >visualized canvas</canvas>
-            <br>
-            <a href="#" id="downloadin" download="inPic.png">download</a>
+            <!--br>
+            <a href="#" id="downloadin" download="inPic.png">download</a-->
         </div>
 
 
@@ -60,8 +60,8 @@
                 <br>
                 <input type="radio" id="s4" name="color"><label for=>16x16</label>
                 <br>
-                <input type="radio" id="s5" name="color"><label for=>32x32</label>
-                <br>
+                <!--input type="radio" id="s5" name="color"><label for=>32x32</label>
+                <br-->
             </form>
             <div id="part" onClick="mi();">SET</div>
         </div>
@@ -122,10 +122,10 @@
                         zoom = 16;
                         prop = 16;
                     }
-                    if (document.getElementById("s5").checked) {
+                  /*  if (document.getElementById("s5").checked) {
                         zoom = 8;
                         prop = 32;
-                    }
+                    }*/
 
                     //color
                     var col = 0;
@@ -338,19 +338,23 @@
                                 }
                             }
                         }
-
-                        document.getElementById('fig').innerHTML += (Math.pow(prop, 2) - m) + " number of black pieces <br>";
-                        document.getElementById('fig').innerHTML += m + " number of white pieces <br>";
-                        document.getElementById('fig').innerHTML += horlinbla + " number of horizontal full black lines <br>";
-                        document.getElementById('fig').innerHTML += verlinbla + " number of vertical full black lines <br>";
-                        document.getElementById('fig').innerHTML += horlinwhi + " number of horizontal full white lines <br>";
-                        document.getElementById('fig').innerHTML += verlinwhi + " number of vertical full white lines <br>";
-                        document.getElementById('fig').innerHTML += blacross + " number of black cross <br>";
-                        document.getElementById('fig').innerHTML += whitecross + " number of white cross <br>";
-                        document.getElementById('fig').innerHTML += blacksquare + " number of black 3x3 square <br>";
-                        document.getElementById('fig').innerHTML += whitesquare + " number of white 3x3 square <br>";
-                        document.getElementById('fig').innerHTML += maxbla + "x" + maxbla + " biggest black square size <br>";
-                        document.getElementById('fig').innerHTML += maxwhi + "x" + maxwhi + " biggest white square size <br>";
+                        document.getElementById('fig').innerHTML += "<div id='part'>numbers</div>";
+                        document.getElementById('fig').innerHTML += "<ul>";
+                        document.getElementById('fig').innerHTML += "<li>black bits</li>"+(Math.pow(prop, 2) - m) + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>white bits</li>" +(m) + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>horizontal full black lines</li>"+ horlinbla + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>vertical full black lines</li>"+verlinbla + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>horizontal full white lines</li>"+horlinwhi + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>vertical full white lines</li>"+verlinwhi + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>black crosses</li>"+ blacross + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>white crosses </li>"+whitecross + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>black 3x3 square</li>"+blacksquare + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>white 3x3 square</li>"+whitesquare + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>biggest black square</li>"+maxbla + "x" + maxbla + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>biggest white square</li>"+maxwhi + "x" + maxwhi + "<br>";
+                        document.getElementById('fig').innerHTML += "</ul>";
+                        
+                         document.getElementById('fig').innerHTML += "<div id='part'>extract</div>";
 
                         for (var i = 0; i < prop; i++) {
                             for (var j = 0; j < prop; j++) {
@@ -418,10 +422,10 @@
                         z = 16;
                         p = 16;
                     }
-                    if (document.getElementById("s5").checked) {
+                   /* if (document.getElementById("s5").checked) {
                         z = 8;
                         p = 32;
-                    }
+                    }*/
 
                     var da = document.getElementById("text").value;
                     for (var o = 0; o < da.length; o++) {
@@ -508,21 +512,21 @@
                     return t;
                 }(document, "script", "twitter-wjs"));
 
-                //downloadbutton
-                var button = document.getElementById('downloadra');
-                button.addEventListener('click', function(e) {
-                    var dataURL = canvas.toDataURL('image/png');
-                    button.href = dataURL;
-                });
-                function getImg() {
-                    //document.write("váá");
-                    var button = document.getElementById('downloadin');
-                    button.addEventListener('click', function(e) {
-                        var dataURL = vican.toDataURL('image/png');
-                        button.href = dataURL;
-                    });
-                }
-                /* textfile making
+                /*downloadbutton
+                 var button = document.getElementById('downloadra');
+                 button.addEventListener('click', function(e) {
+                 var dataURL = canvas.toDataURL('image/png');
+                 button.href = dataURL;
+                 });
+                 function getImg() {
+                 //document.write("váá");
+                 var button = document.getElementById('downloadin');
+                 button.addEventListener('click', function(e) {
+                 var dataURL = vican.toDataURL('image/png');
+                 button.href = dataURL;
+                 });
+                 }
+                 /* textfile making
                  var textFile = null;
                  function makeTextFile(text) {
                  var data = new Blob([text], {type: 'text/plain'});
