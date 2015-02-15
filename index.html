@@ -511,25 +511,17 @@
                 //downloadbutton
                 var button = document.getElementById('downloadra');
                 button.addEventListener('click', function(e) {
-                    window.savephotoplugin(canvas, "image/png", device.version, function(val) {
-                        alert("photo saved");
-                    });
-
-                    //var dataURL = canvas.toDataURL('image/png');
+                    var dataURL = canvas.toDataURL('image/png');
                     button.href = dataURL;
                 });
                 function getImg() {
                     //document.write("v··");
                     var button = document.getElementById('downloadin');
                     button.addEventListener('click', function(e) {
-                        window.savephotoplugin(vican, "image/png", device.version, function(val) {
-                            alert("photo saved");
-                        });
-                        //var dataURL = vican.toDataURL('image/png');
+                        var dataURL = vican.toDataURL('image/png');
                         button.href = dataURL;
                     });
                 }
-
                 /* textfile making
                  var textFile = null;
                  function makeTextFile(text) {
