@@ -10,6 +10,7 @@
             <span><input id="b" type="button" value="stats" onClick="change('fig');"></span>
             <span><input id="b" type="button" value="input" onClick="change('in');"></span>  <!--both from textarea, file and tweet-->
             <span><input id="b" type="button" value="set" onClick="change('set');"></span> 
+            <span><input id="b" type="button" value="info" onClick="change('info');"></span> 
             <!--span><input id="b" type="button" value="output" onClick="change('out')"></span> <both file and pic download-->
         </div>
 
@@ -22,9 +23,18 @@
         <!--div id="ind" ></div--> <!--containing 1s and 0s-->
 
         <div id="fig"></div>
+        
+        <div id="info">
+            <p>version 2.4</p>
+            <p>made by Leah Der</p>
+            <p>_ _ _ _ _</p>
+            <p style="font-size: smaller">leahnori@gmail.com</p>
+            <p style="font-size: smaller">leahnori.github.io</p>
+        </div>
 
         <div id="in">
-            <textarea id="text" placeholder="put here the code! :) you can use 0s or 1s to code it!" rows=8 ></textarea>
+            <div id="rules"></div>
+            <textarea id="text" placeholder="put here the code! :)" rows=8 ></textarea>
             <input id="b" type="button" value="visualize!" onClick="visualize();">
 
         </div>
@@ -122,18 +132,21 @@
                         zoom = 16;
                         prop = 16;
                     }
-                  /*  if (document.getElementById("s5").checked) {
-                        zoom = 8;
-                        prop = 32;
-                    }*/
+                    /*  if (document.getElementById("s5").checked) {
+                     zoom = 8;
+                     prop = 32;
+                     }*/
 
                     //color
                     var col = 0;
                     if (document.getElementById("m1").checked) {
                         col = 0;
+                        document.getElementById("rules").innerHTML = "0 - white   1 - black";
                     }
                     if (document.getElementById("m2").checked) {
                         col = 1;
+                        document.getElementById("rules").innerHTML = "0 - white   1 - black <br> 2 - yellow   3 - orange <br> 4 - red   5 - pink <br> 6 - brown   7 - blue <br> 8 - green   9 - grey";
+
                     }
 
                     document.title = " ";
@@ -340,31 +353,32 @@
                         }
                         document.getElementById('fig').innerHTML += "<div id='part'>numbers</div>";
                         document.getElementById('fig').innerHTML += "<ul>";
-                        document.getElementById('fig').innerHTML += "<li>black bits</li>"+(Math.pow(prop, 2) - m) + "<br>";
-                        document.getElementById('fig').innerHTML += "<li>white bits</li>" +(m) + "<br>";
-                        document.getElementById('fig').innerHTML += "<li>horizontal full black lines</li>"+ horlinbla + "<br>";
-                        document.getElementById('fig').innerHTML += "<li>vertical full black lines</li>"+verlinbla + "<br>";
-                        document.getElementById('fig').innerHTML += "<li>horizontal full white lines</li>"+horlinwhi + "<br>";
-                        document.getElementById('fig').innerHTML += "<li>vertical full white lines</li>"+verlinwhi + "<br>";
-                        document.getElementById('fig').innerHTML += "<li>black crosses</li>"+ blacross + "<br>";
-                        document.getElementById('fig').innerHTML += "<li>white crosses </li>"+whitecross + "<br>";
-                        document.getElementById('fig').innerHTML += "<li>black 3x3 square</li>"+blacksquare + "<br>";
-                        document.getElementById('fig').innerHTML += "<li>white 3x3 square</li>"+whitesquare + "<br>";
-                        document.getElementById('fig').innerHTML += "<li>biggest black square</li>"+maxbla + "x" + maxbla + "<br>";
-                        document.getElementById('fig').innerHTML += "<li>biggest white square</li>"+maxwhi + "x" + maxwhi + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>black bits</li>" + (Math.pow(prop, 2) - m) + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>white bits</li>" + (m) + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>horizontal full black lines</li>" + horlinbla + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>vertical full black lines</li>" + verlinbla + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>horizontal full white lines</li>" + horlinwhi + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>vertical full white lines</li>" + verlinwhi + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>black crosses</li>" + blacross + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>white crosses </li>" + whitecross + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>black 3x3 square</li>" + blacksquare + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>white 3x3 square</li>" + whitesquare + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>biggest black square</li>" + maxbla + "x" + maxbla + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>biggest white square</li>" + maxwhi + "x" + maxwhi + "<br>";
                         document.getElementById('fig').innerHTML += "</ul>";
-                        
-                         document.getElementById('fig').innerHTML += "<div id='part'>extract</div>";
+
+                        document.getElementById('fig').innerHTML += "<div id='part'>extract</div>";
 
                         for (var i = 0; i < prop; i++) {
                             for (var j = 0; j < prop; j++) {
-                                document.getElementById("fig").innerHTML += bigIndex[i][j];
+                                document.getElementById("fig").innerHTML += bigIndex[i][j] + " ";
                             }
                             document.getElementById("fig").innerHTML += "<br>";
                         }
                     }
 
                     if (col === 1) {
+                        var colIndex = [];
                         document.title = "Random colored! :)";
                         var r = 0;
                         var g = 0;
@@ -375,7 +389,9 @@
                                 r = Math.floor(Math.random() * 255);
                                 g = Math.floor(Math.random() * 255);
                                 b = Math.floor(Math.random() * 255);
-
+                                var o = b | (g << 8) | (r << 16);
+                                var rgb = '#' + (0x1000000 + o).toString(16).slice(1);
+                                smIndex[smIndex.length]=rgb;
                                 for (var a = 0; a < zoom; a++) {
                                     for (var e = 0; e < zoom; e++) {
                                         setPixel(imageData, y + a, x + e, r, g, b, 255); // 255 opaque
@@ -384,6 +400,14 @@
 
                             }
                             c.putImageData(imageData, 0, 0);
+                            colIndex[colIndex.length]=smIndex;
+                        }
+                        document.getElementById('fig').innerHTML += "<div id='part'>extract</div>";
+
+                        for (var i = 0; i < prop; i++) {
+                            for (var j = 0; j < prop; j++) {
+                                document.getElementById("fig").innerHTML +="row "+(i+1)+" col "+(j+1)+" "+colIndex[i][j] + "<br>";
+                            }
                         }
                     }
                 }
@@ -399,7 +423,6 @@
                     var r = 0;
                     var g = 0;
                     var b = 0;
-
                     var z = 0;
                     var p = 0;
                     if (document.getElementById("s0").checked) {
@@ -422,21 +445,33 @@
                         z = 16;
                         p = 16;
                     }
-                   /* if (document.getElementById("s5").checked) {
-                        z = 8;
-                        p = 32;
-                    }*/
+                    /* if (document.getElementById("s5").checked) {
+                     z = 8;
+                     p = 32;
+                     }*/
 
                     var da = document.getElementById("text").value;
-                    for (var o = 0; o < da.length; o++) {
-                        var i = da.charAt(o).toString();
-                        if (i !== "1" && i !== "0") {
-                            da = setCharAt(da, o, "");
-                            o--;
+                    //b&w
+                    if (document.getElementById("m1").checked) {
+                        for (var o = 0; o < da.length; o++) {
+                            var i = da.charAt(o).toString();
+                            if (i !== "1" && i !== "0") {
+                                da = setCharAt(da, o, "");
+                                o--;
+                            }
+                        }
+                    }
+                    //colors
+                    if (document.getElementById("m2").checked) {
+                        for (var o = 0; o < da.length; o++) {
+                            var i = da.charAt(o).toString();
+                            if (i !== "0" && i !== "1" && i !== "2" && i !== "3" && i !== "4" && i !== "5" && i !== "6" && i !== "7" && i !== "8" && i !== "9") {
+                                da = setCharAt(da, o, "");
+                                o--;
+                            }
                         }
                     }
                     document.getElementById("text").value = da;
-
                     if (da.length < (Math.pow(p, 2))) {
                         for (var t = da.length; t < Math.pow(p, 2); t++) {
                             da = da + "0";
@@ -446,27 +481,90 @@
                     }
                     element = document.getElementById("vican");
                     var c = element.getContext("2d");
-
                     width = element.width;
                     height = element.height;
-
                     var imageData = c.createImageData(width, height);
 
-                    for (var x = 0; x < p; x++) {
-                        for (var y = 0; y < p; y++) {
-                            var s = da.charAt(x * p + y);
-                            if (s === '1') {
-                                r = 0;
-                                g = 0;
-                                b = 0;
-                            } else {
-                                r = 255;
-                                g = 255;
-                                b = 255;
+                    if (document.getElementById("m1").checked) {
+                        for (var x = 0; x < p; x++) {
+                            for (var y = 0; y < p; y++) {
+                                var s = da.charAt(x * p + y);
+                                if (s === '1') {
+                                    r = 0;
+                                    g = 0;
+                                    b = 0;
+                                } else {
+                                    r = 255;
+                                    g = 255;
+                                    b = 255;
+                                }
+                                for (var a = 0; a < z; a++) {
+                                    for (var e = 0; e < z; e++) {
+                                        setPixel(imageData, y * z + a, x * z + e, r, g, b, 255); // 255 opaque
+                                    }
+                                }
                             }
-                            for (var a = 0; a < z; a++) {
-                                for (var e = 0; e < z; e++) {
-                                    setPixel(imageData, y * z + a, x * z + e, r, g, b, 255); // 255 opaque
+                        }
+                    } else if (document.getElementById("m2").checked) {
+                        for (var x = 0; x < p; x++) {
+                            for (var y = 0; y < p; y++) {
+                                var s = da.charAt(x * p + y);
+                                switch (s) {
+                                    case '0':
+                                        r = 255;
+                                        g = 255;
+                                        b = 255;
+                                        break;//white
+                                    case '1':
+                                        r = 0;
+                                        g = 0;
+                                        b = 0;
+                                        break;//black
+                                    case '2':
+                                        r = 255;
+                                        g = 255;
+                                        b = 0;
+                                        break;//yellow
+                                    case '3':
+                                        r = 255;
+                                        g = 128;
+                                        b = 0;
+                                        break;//orange
+                                    case '4':
+                                        r = 255;
+                                        g = 0;
+                                        b = 0;
+                                        break;//red
+                                    case '5':
+                                        r = 255;
+                                        g = 0;
+                                        b = 127;
+                                        break;//pink
+                                    case '6':
+                                        r = 153;
+                                        g = 76;
+                                        b = 0;
+                                        break;//brown
+                                    case '7':
+                                        r = 0;
+                                        g = 0;
+                                        b = 255;
+                                        break;//blue
+                                    case '8':
+                                        r = 0;
+                                        g = 153;
+                                        b = 0;
+                                        break;//green
+                                    case '9':
+                                        r = 160;
+                                        g = 160;
+                                        b = 160;
+                                        break;//grey
+                                }
+                                for (var a = 0; a < z; a++) {
+                                    for (var e = 0; e < z; e++) {
+                                        setPixel(imageData, y * z + a, x * z + e, r, g, b, 255); // 255 opaque
+                                    }
                                 }
                             }
                         }
@@ -474,10 +572,13 @@
 
                     c.putImageData(imageData, 0, 0);
                     document.getElementById("vica").style.display = "block";
-                    getImg();
+                    //getImg();
                 }
                 function change(one) {
                     current = one;
+                    if (one == "in") {
+                        document.getElementById("rules").style.display = "block";
+                    }
                     document.getElementById(one).style.display = "block";
                     document.getElementById("back").style.display = "block";
                     document.getElementById("rand").style.display = "none";
@@ -493,7 +594,6 @@
                     document.getElementById("vica").style.display = "none";
                     document.getElementById("back").style.display = "none";
                     document.getElementById("twitter").style.display = "block";
-
                 }
 
                 //twitter
@@ -510,8 +610,8 @@
                         t._e.push(f);
                     };
                     return t;
-                }(document, "script", "twitter-wjs"));
-
+                }
+                (document, "script", "twitter-wjs"));
                 /*downloadbutton
                  var button = document.getElementById('downloadra');
                  button.addEventListener('click', function(e) {

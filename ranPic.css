@@ -2,7 +2,7 @@ body {
 	font-family: "Courier New";
 }
 #p {
-	font-size:300%;
+	font-size:280%;
 	padding:10px;
 	font-weight:bold;
 	margin:5px;
@@ -19,7 +19,7 @@ body {
 	font-weight:bold;
 	padding:5px;
 }
-#fig, #in,#back, #out, #set {
+#in,#back, #out, #set, #info {
 	width:90%;
 	background-color:#FFFFFF;
 	margin-right:auto;
@@ -28,6 +28,32 @@ body {
 	margin-top:5px;
 	margin-bottom:5px;
 	font-size:x-large;
+	font-weight:bold;
+	padding:5px;
+	display:none;
+}
+#rules {
+        width:90%;
+	background-color:#FFFFFF;
+	margin-right:auto;
+	margin-left:auto;
+	text-align:center;
+	margin-top:5px;
+	margin-bottom:5px;
+	font-size:large;
+	font-weight:bold;
+	padding:5px;
+	display:none;
+}
+#fig{
+        width:90%;
+	background-color:#FFFFFF;
+	margin-right:auto;
+	margin-left:auto;
+	text-align:center;
+	margin-top:5px;
+	margin-bottom:5px;
+	font-size:small;
 	font-weight:bold;
 	padding:5px;
 	display:none;
@@ -110,8 +136,4 @@ a{
 }
 label {
 	margin-left:10px;
-}
-td {
-    valign: middle;
-    text-align: center;
 }
