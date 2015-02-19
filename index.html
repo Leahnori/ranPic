@@ -11,21 +11,16 @@
             <span><input id="b" type="button" value="input" onClick="change('in');"></span>  <!--both from textarea, file and tweet-->
             <span><input id="b" type="button" value="set" onClick="change('set');"></span> 
             <span><input id="b" type="button" value="info" onClick="change('info');"></span> 
-            <!--span><input id="b" type="button" value="output" onClick="change('out')"></span> <both file and pic download-->
         </div>
 
         <div id="rand" >
             <canvas id="canvas" width="256" height="256" onClick="mi();">random Canvas</canvas> <!--location.reload()-->
-            <!--br>
-            <a href="#" id="downloadra" download="ranPic.png">download</a-->
         </div>
 
-        <!--div id="ind" ></div--> <!--containing 1s and 0s-->
-
         <div id="fig"></div>
-        
+
         <div id="info">
-            <p>version 2.4</p>
+            <p>version 1.0</p>
             <p>made by Leah Der</p>
             <p>_ _ _ _ _</p>
             <p style="font-size: smaller">leahnori@gmail.com</p>
@@ -41,15 +36,7 @@
 
         <div id="vica">
             <canvas id="vican" width="256" height="256" >visualized canvas</canvas>
-            <!--br>
-            <a href="#" id="downloadin" download="inPic.png">download</a-->
-        </div>
-
-
-        <!--div id="out">
-            <button id="create">create file</button> 
-            <a download="info.txt" id="downloadlink" style="display: none">download</a>
-        </div-->	
+        </div>	
 
         <div id="set">
             <div id="part">mode</div>
@@ -57,6 +44,13 @@
                 <input type="radio" id="m1" name="color" checked><label>black and white</label>
                 <br>
                 <input type="radio" id="m2" name="color"><label>colorful</label>
+            </form>
+            <div id="part">mirror</div>
+            <form name="mode">
+                <input type="radio" id="t1" name="color" checked><label>no mirror</label>
+                <br>
+                <input type="radio" id="t2" name="color"><label>mirror +</label>
+                <br>
             </form>
             <div id="part">size</div>
             <form name="size">
@@ -70,10 +64,9 @@
                 <br>
                 <input type="radio" id="s4" name="color"><label for=>16x16</label>
                 <br>
-                <!--input type="radio" id="s5" name="color"><label for=>32x32</label>
-                <br-->
             </form>
-            <div id="part" onClick="mi();">SET</div>
+            <div id="part" onClick="mi();
+                    back();">SET</div>
         </div>
 
         <div id="back">
@@ -132,10 +125,6 @@
                         zoom = 16;
                         prop = 16;
                     }
-                    /*  if (document.getElementById("s5").checked) {
-                     zoom = 8;
-                     prop = 32;
-                     }*/
 
                     //color
                     var col = 0;
@@ -166,56 +155,139 @@
                     height = element.height;
 
                     imageData = c.createImageData(width, height);
-                    var m = 0;
 
-                    if (col === 0) {
+                    if (col === 0) { //black and white
                         var r = 0;
                         var g = 0;
                         var b = 0;
                         var s = 0;
                         document.getElementById('fig').innerHTML = "";
-                        for (var x = 0; x < width; x = x + zoom) {
-                            var smIndex = [];
-                            for (var y = 0; y < height; y = y + zoom) {
-                                s = Math.floor(Math.random() * 2);
-                                m = m + s;
-                                var dot = 1;
-                                if (s === 0) {
-                                    r = 0;
-                                    g = 0;
-                                    b = 0;
-                                } else {
-                                    r = 255;
-                                    g = 255;
-                                    b = 255;
-                                    dot = 0;
+
+                        if (document.getElementById("t1").checked) { //no mirror
+                            for (var x = 0; x < width; x = x + zoom) {
+                                var smIndex = [];
+                                for (var y = 0; y < height; y = y + zoom) {
+                                    s = Math.floor(Math.random() * 2);
+                                    var dot = 1;
+                                    if (s === 0) {
+                                        r = 0;
+                                        g = 0;
+                                        b = 0;
+                                    } else {
+                                        r = 255;
+                                        g = 255;
+                                        b = 255;
+                                        dot = 0;
+                                    }
+                                    smIndex[smIndex.length] = dot;
+                                    for (var a = 0; a < zoom; a++) {
+                                        for (var e = 0; e < zoom; e++) {
+                                            setPixel(imageData, y + a, x + e, r, g, b, 255); // 255 opaque
+                                        }
+                                    }
                                 }
-                                smIndex[smIndex.length] = dot;
-                                for (var a = 0; a < zoom; a++) {
-                                    for (var e = 0; e < zoom; e++) {
-                                        setPixel(imageData, y + a, x + e, r, g, b, 255); // 255 opaque
+                                bigIndex[bigIndex.length] = smIndex;
+                            }
+                        } else if (document.getElementById("t2").checked) { //mirror
+                            var partIndex = [];
+                            for (var x = 0; x < width / 2; x = x + zoom) {
+                                for (var y = 0; y < height / 2; y = y + zoom) {
+                                    s = Math.floor(Math.random() * 2);
+                                    var dot = 1;
+                                    if (s === 0) {
+                                        r = 0;
+                                        g = 0;
+                                        b = 0;
+                                    } else {
+                                        r = 255;
+                                        g = 255;
+                                        b = 255;
+                                        dot = 0;
+                                    }
+                                    partIndex[partIndex.length] = dot;
+                                }
+                            }
+                            var smIndex = [];
+
+                            for (var k = 0; k < prop; k++) {
+                                smIndex = [];
+                                for (var l = 0; l < prop; l++) {
+                                    if (l < prop / 2 && k < prop / 2) {
+                                        smIndex[smIndex.length] = partIndex[l * prop / 2 + k];
+                                    }
+                                    if (l < prop / 2 && k >= prop / 2) {
+                                        smIndex[smIndex.length] = partIndex[l * prop / 2 + (prop - k - 1)];
+                                    }
+                                    if (l >= prop / 2 && k < prop / 2) {
+                                        smIndex[smIndex.length] = partIndex[(prop - l - 1) * prop / 2 + k];
+                                    }
+                                    if (l >= prop / 2 && k >= prop / 2) {
+                                        smIndex[smIndex.length] = partIndex[(prop - l - 1) * prop / 2 + (prop - k - 1)];
+                                    }
+                                }
+                                bigIndex[bigIndex.length] = smIndex;
+                            }
+                            for (var d = 0; d < prop / 2; d++) {
+                                for (var u = 0; u < prop / 2; u++) {
+                                    for (var a = 0; a < zoom; a++) {
+                                        for (var e = 0; e < zoom; e++)
+                                            if (partIndex[d * (prop / 2) + u] === 1) {
+                                                setPixel(imageData, d * zoom + a, u * zoom + e, 0, 0, 0, 255); // 255 opaque
+                                            } else {
+                                                setPixel(imageData, d * zoom + a, u * zoom + e, 255, 255, 255, 255); // 255 opaque
+                                            }
                                     }
                                 }
                             }
-                            bigIndex[bigIndex.length] = smIndex;
+                            for (var d = 0; d < prop / 2; d++) {
+                                for (var u = prop - 1; u >= prop / 2; u--) {
+                                    for (var a = 0; a < zoom; a++) {
+                                        for (var e = 0; e < zoom; e++)
+                                            if (partIndex[d * (prop / 2) + (prop - u - 1)] === 1) {
+                                                setPixel(imageData, d * zoom + a, u * zoom + e, 0, 0, 0, 255); // 255 opaque
+                                            } else {
+                                                setPixel(imageData, d * zoom + a, u * zoom + e, 255, 255, 255, 255); // 255 opaque
+                                            }
+                                    }
+                                }
+                            }
+                            for (var d = prop - 1; d >= prop / 2; d--) {
+                                for (var u = 0; u < prop / 2; u++) {
+                                    for (var a = 0; a < zoom; a++) {
+                                        for (var e = 0; e < zoom; e++)
+                                            if (partIndex[(prop - d - 1) * (prop / 2) + u] === 1) {
+                                                setPixel(imageData, d * zoom + a, u * zoom + e, 0, 0, 0, 255); // 255 opaque
+                                            } else {
+                                                setPixel(imageData, d * zoom + a, u * zoom + e, 255, 255, 255, 255); // 255 opaque
+                                            }
+                                    }
+                                }
+                            }
+                            for (var d = prop - 1; d >= prop / 2; d--) {
+                                for (var u = prop - 1; u >= prop / 2; u--) {
+                                    for (var a = 0; a < zoom; a++) {
+                                        for (var e = 0; e < zoom; e++)
+                                            if (partIndex[(prop - d - 1) * (prop / 2) + (prop - u - 1)] === 1) {
+                                                setPixel(imageData, d * zoom + a, u * zoom + e, 0, 0, 0, 255); // 255 opaque
+                                            } else {
+                                                setPixel(imageData, d * zoom + a, u * zoom + e, 255, 255, 255, 255); // 255 opaque
+                                            }
+                                    }
+                                }
+                            }
                         }
-
-                        /* for the txtfile
-                         for (var q = 0; q < prop; q++) {
-                         for (var r = 0; r < prop; r++) {
-                         code += bigIndex[q][r];
-                         }
-                         }*/
                         if (prop <= 10) {
                             for (var q = 0; q < prop; q++) {
-                                for (var r = 0; r < prop; r++) {
-                                    document.title += bigIndex[q][r];
+                                for (var z = 0; z < prop; z++) {
+                                    document.title += bigIndex[q][z];
                                 }
                             }
                         }
 
                         c.putImageData(imageData, 0, 0);
 
+                        //stat
+                        var blapie = 0;
                         var horlinbla = 0;
                         var verlinbla = 0;
                         var horlinwhi = 0;
@@ -226,6 +298,14 @@
                         var whitesquare = 0;
                         var maxbla = 0;
                         var maxwhi = 0;
+
+                        for (var i = 0; i < prop; i++) {
+                            for (var j = 0; j < prop; j++) {
+                                if (bigIndex[i][j] === 1) {
+                                    blapie++;
+                                }
+                            }
+                        }
 
                         for (var q = 0; q < prop; q++) {
                             var w = 0;
@@ -353,8 +433,8 @@
                         }
                         document.getElementById('fig').innerHTML += "<div id='part'>numbers</div>";
                         document.getElementById('fig').innerHTML += "<ul>";
-                        document.getElementById('fig').innerHTML += "<li>black bits</li>" + (Math.pow(prop, 2) - m) + "<br>";
-                        document.getElementById('fig').innerHTML += "<li>white bits</li>" + (m) + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>black bits</li>" + (blapie) + "<br>";
+                        document.getElementById('fig').innerHTML += "<li>white bits</li>" + (Math.pow(prop, 2) - blapie) + "<br>";
                         document.getElementById('fig').innerHTML += "<li>horizontal full black lines</li>" + horlinbla + "<br>";
                         document.getElementById('fig').innerHTML += "<li>vertical full black lines</li>" + verlinbla + "<br>";
                         document.getElementById('fig').innerHTML += "<li>horizontal full white lines</li>" + horlinwhi + "<br>";
@@ -367,6 +447,7 @@
                         document.getElementById('fig').innerHTML += "<li>biggest white square</li>" + maxwhi + "x" + maxwhi + "<br>";
                         document.getElementById('fig').innerHTML += "</ul>";
 
+                        //extract
                         document.getElementById('fig').innerHTML += "<div id='part'>extract</div>";
 
                         for (var i = 0; i < prop; i++) {
@@ -377,36 +458,93 @@
                         }
                     }
 
-                    if (col === 1) {
+                    if (col === 1) { //colorful
                         var colIndex = [];
                         document.title = "Random colored! :)";
                         var r = 0;
                         var g = 0;
                         var b = 0;
-                        for (var x = 0; x < width; x = x + zoom) {
-                            var smIndex = [];
-                            for (var y = 0; y < height; y = y + zoom) {
-                                r = Math.floor(Math.random() * 255);
-                                g = Math.floor(Math.random() * 255);
-                                b = Math.floor(Math.random() * 255);
-                                var o = b | (g << 8) | (r << 16);
-                                var rgb = '#' + (0x1000000 + o).toString(16).slice(1);
-                                smIndex[smIndex.length]=rgb;
-                                for (var a = 0; a < zoom; a++) {
-                                    for (var e = 0; e < zoom; e++) {
-                                        setPixel(imageData, y + a, x + e, r, g, b, 255); // 255 opaque
+                        if (document.getElementById("t1").checked) { //no mirror
+                            for (var x = 0; x < width; x = x + zoom) {
+                                var smIndex = [];
+                                for (var y = 0; y < height; y = y + zoom) {
+                                    r = Math.floor(Math.random() * 255);
+                                    g = Math.floor(Math.random() * 255);
+                                    b = Math.floor(Math.random() * 255);
+                                    var o = b | (g << 8) | (r << 16);
+                                    var rgb = '#' + (0x1000000 + o).toString(16).slice(1);
+                                    smIndex[smIndex.length] = rgb;
+                                    for (var a = 0; a < zoom; a++) {
+                                        for (var e = 0; e < zoom; e++) {
+                                            setPixel(imageData, y + a, x + e, r, g, b, 255); // 255 opaque
+                                        }
+                                    }
+
+                                }
+                                c.putImageData(imageData, 0, 0);
+                                colIndex[colIndex.length] = smIndex;
+                            }
+                        } else if (document.getElementById("t2").checked) { //mirror
+                            var partIndex = [];
+                            for (var x = 0; x < prop / 2; x++) {
+                                for (var y = 0; y < prop / 2; y++) {
+                                    r = Math.floor(Math.random() * 255);
+                                    g = Math.floor(Math.random() * 255);
+                                    b = Math.floor(Math.random() * 255);
+                                    partIndex[partIndex.length] = r;
+                                    partIndex[partIndex.length] = g;
+                                    partIndex[partIndex.length] = b;
+                                }
+                            }
+                            for (var d = 0; d < prop / 2; d++) {
+                                for (var u = 0; u < prop / 2; u++) {
+                                    for (var a = 0; a < zoom; a++) {
+                                        for (var e = 0; e < zoom; e++) {
+                                            setPixel(imageData, d * zoom + a, u * zoom + e, partIndex[3 * (d * (prop / 2) + u)], partIndex[3 * (d * (prop / 2) + u) + 1], partIndex[3 * (d * (prop / 2) + u) + 2], 255);
+                                        }
                                     }
                                 }
+                            }
+                            for (var d = 0; d < prop / 2; d++) {
+                                for (var u = prop - 1; u >= prop / 2; u--) {
+                                    for (var a = 0; a < zoom; a++) {
+                                        for (var e = 0; e < zoom; e++) {
+                                            setPixel(imageData, d * zoom + a, u * zoom + e, partIndex[3 * (d * (prop / 2) + (prop - u - 1))], partIndex[3 * (d * (prop / 2) + (prop - u - 1)) + 1], partIndex[3 * (d * (prop / 2) + (prop - u - 1)) + 2], 255);
 
+                                        }
+                                    }
+                                }
+                            }
+                            for (var d = prop - 1; d >= prop / 2; d--) {
+                                for (var u = 0; u < prop / 2; u++) {
+                                    for (var a = 0; a < zoom; a++) {
+                                        for (var e = 0; e < zoom; e++) {
+                                            setPixel(imageData, d * zoom + a, u * zoom + e, partIndex[3 * ((prop - d - 1) * (prop / 2) + u)], partIndex[3 * ((prop - d - 1) * (prop / 2) + u) + 1], partIndex[3 * ((prop - d - 1) * (prop / 2) + u) + 2], 255);
+                                        }
+                                    }
+                                }
+                            }
+                            for (var d = prop - 1; d >= prop / 2; d--) {
+                                for (var u = prop - 1; u >= prop / 2; u--) {
+                                    for (var a = 0; a < zoom; a++) {
+                                        for (var e = 0; e < zoom; e++) {
+                                            setPixel(imageData, d * zoom + a, u * zoom + e, partIndex[ 3 * ((prop - d - 1) * (prop / 2) + (prop - u - 1))], partIndex[3 * ((prop - d - 1) * (prop / 2) + (prop - u - 1)) + 1], partIndex[3 * ((prop - d - 1) * (prop / 2) + (prop - u - 1)) + 2], 255);
+                                        }
+                                    }
+                                }
                             }
                             c.putImageData(imageData, 0, 0);
-                            colIndex[colIndex.length]=smIndex;
                         }
-                        document.getElementById('fig').innerHTML += "<div id='part'>extract</div>";
 
-                        for (var i = 0; i < prop; i++) {
-                            for (var j = 0; j < prop; j++) {
-                                document.getElementById("fig").innerHTML +="row "+(i+1)+" col "+(j+1)+" "+colIndex[i][j] + "<br>";
+                        document.getElementById('fig').innerHTML += "<div id='part'>extract</div>";
+                        for (var i = 0; i < prop / 2; i++) {
+                            for (var j = 0; j < prop / 2; j++) {
+                                r = partIndex[3 * (i * (prop / 2) + j)];
+                                g = partIndex[3 * (i * (prop / 2) + j) + 1];
+                                b = partIndex[3 * (i * (prop / 2) + j) + 2];
+                                var o = b | (g << 8) | (r << 16);
+                                var rgb = '#' + (0x1000000 + o).toString(16).slice(1);
+                                document.getElementById("fig").innerHTML += "row " + (i + 1) + " col " + (j + 1) + " " + rgb + "<br>";
                             }
                         }
                     }
@@ -418,8 +556,8 @@
                         return str;
                     return str.substr(0, index) + chr + str.substr(index + 1);
                 }
+                
                 function visualize() {
-
                     var r = 0;
                     var g = 0;
                     var b = 0;
@@ -445,10 +583,6 @@
                         z = 16;
                         p = 16;
                     }
-                    /* if (document.getElementById("s5").checked) {
-                     z = 8;
-                     p = 32;
-                     }*/
 
                     var da = document.getElementById("text").value;
                     //b&w
@@ -471,7 +605,7 @@
                             }
                         }
                     }
-                    document.getElementById("text").value = da;
+
                     if (da.length < (Math.pow(p, 2))) {
                         for (var t = da.length; t < Math.pow(p, 2); t++) {
                             da = da + "0";
@@ -479,13 +613,20 @@
                     } else if (da.length > Math.pow(p, 2)) {
                         da = da.substr(0, Math.pow(p, 2));
                     }
+                    document.getElementById("text").value = "";
+                    for (var i = 0; i < p; i++) {
+                        for (var j = 0; j < p; j++) {
+                            document.getElementById("text").value += da.charAt(p * i + j);
+                        }
+                        document.getElementById("text").value += "\n";
+                    }
                     element = document.getElementById("vican");
                     var c = element.getContext("2d");
                     width = element.width;
                     height = element.height;
                     var imageData = c.createImageData(width, height);
 
-                    if (document.getElementById("m1").checked) {
+                    if (document.getElementById("m1").checked) { //black and white visualize
                         for (var x = 0; x < p; x++) {
                             for (var y = 0; y < p; y++) {
                                 var s = da.charAt(x * p + y);
@@ -505,7 +646,7 @@
                                 }
                             }
                         }
-                    } else if (document.getElementById("m2").checked) {
+                    } else if (document.getElementById("m2").checked) { //colorful visualize
                         for (var x = 0; x < p; x++) {
                             for (var y = 0; y < p; y++) {
                                 var s = da.charAt(x * p + y);
@@ -572,7 +713,6 @@
 
                     c.putImageData(imageData, 0, 0);
                     document.getElementById("vica").style.display = "block";
-                    //getImg();
                 }
                 function change(one) {
                     current = one;
@@ -612,42 +752,5 @@
                     return t;
                 }
                 (document, "script", "twitter-wjs"));
-                /*downloadbutton
-                 var button = document.getElementById('downloadra');
-                 button.addEventListener('click', function(e) {
-                 var dataURL = canvas.toDataURL('image/png');
-                 button.href = dataURL;
-                 });
-                 function getImg() {
-                 //document.write("váá");
-                 var button = document.getElementById('downloadin');
-                 button.addEventListener('click', function(e) {
-                 var dataURL = vican.toDataURL('image/png');
-                 button.href = dataURL;
-                 });
-                 }
-                 /* textfile making
-                 var textFile = null;
-                 function makeTextFile(text) {
-                 var data = new Blob([text], {type: 'text/plain'});
-                 
-                 if (textFile !== null) {
-                 window.URL.revokeObjectURL(textFile);
-                 }
-                 
-                 textFile = window.URL.createObjectURL(data);
-                 
-                 return textFile;
-                 }
-                 
-                 var create = document.getElementById('create');
-                 var textbox = document.getElementById('textbox');
-                 
-                 create.addEventListener('click', function() {
-                 var link = document.getElementById('downloadlink');
-                 link.href = makeTextFile(code);
-                 link.style.display = 'block';
-                 }, false);*/
-
 </script>
 
