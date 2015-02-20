@@ -484,6 +484,13 @@
                                 c.putImageData(imageData, 0, 0);
                                 colIndex[colIndex.length] = smIndex;
                             }
+                            document.getElementById('fig').innerHTML += "<div id='part'>extract</div>";
+                            for (var i = 0; i < prop; i++) {
+                                for (var j = 0; j < prop; j++) {
+                                    rgb = colIndex[i][j];
+                                    document.getElementById("fig").innerHTML += "row " + (i + 1) + " col " + (j + 1) + " " + rgb + "<br>";
+                                }
+                            }
                         } else if (document.getElementById("t2").checked) { //mirror
                             var partIndex = [];
                             for (var x = 0; x < prop / 2; x++) {
@@ -534,17 +541,17 @@
                                 }
                             }
                             c.putImageData(imageData, 0, 0);
-                        }
 
-                        document.getElementById('fig').innerHTML += "<div id='part'>extract</div>";
-                        for (var i = 0; i < prop / 2; i++) {
-                            for (var j = 0; j < prop / 2; j++) {
-                                r = partIndex[3 * (i * (prop / 2) + j)];
-                                g = partIndex[3 * (i * (prop / 2) + j) + 1];
-                                b = partIndex[3 * (i * (prop / 2) + j) + 2];
-                                var o = b | (g << 8) | (r << 16);
-                                var rgb = '#' + (0x1000000 + o).toString(16).slice(1);
-                                document.getElementById("fig").innerHTML += "row " + (i + 1) + " col " + (j + 1) + " " + rgb + "<br>";
+                            document.getElementById('fig').innerHTML += "<div id='part'>extract</div>";
+                            for (var i = 0; i < prop / 2; i++) {
+                                for (var j = 0; j < prop / 2; j++) {
+                                    r = partIndex[3 * (i * (prop / 2) + j)];
+                                    g = partIndex[3 * (i * (prop / 2) + j) + 1];
+                                    b = partIndex[3 * (i * (prop / 2) + j) + 2];
+                                    var o = b | (g << 8) | (r << 16);
+                                    var rgb = '#' + (0x1000000 + o).toString(16).slice(1);
+                                    document.getElementById("fig").innerHTML += "row " + (i + 1) + " col " + (j + 1) + " " + rgb + "<br>";
+                                }
                             }
                         }
                     }
@@ -556,7 +563,7 @@
                         return str;
                     return str.substr(0, index) + chr + str.substr(index + 1);
                 }
-                
+
                 function visualize() {
                     var r = 0;
                     var g = 0;
